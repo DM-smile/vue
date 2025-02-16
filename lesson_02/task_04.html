@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         h3 {
+            max-width: 600px;
+         }
+
+         body {
+            max-width: 400px;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Задача 4. Вивести список як маркований список з елементами у форматі (name: salary)</h3>
+      <img src="img/code.png" alt="Image">
+      <img src="img/code2.png" alt="Image">
+      <hr />
+      <div id="app">
+         <ul>
+            <li v-for="el in list" :key="el.id"> {{el.name}}: {{el.salary}}</li>
+         </ul>
+      </div>
+      <script>
+         const workersList = [
+            { id: 111, name: 'Іванов', salary: 10000 },
+            { id: 112, name: 'Петров', salary: 12000 },
+            { id: 113, name: 'Сидоров', salary: 9500 },
+            { id: 114, name: 'Коваленко', salary: 11000 },
+            { id: 115, name: 'Шевченко', salary: 15000 },
+            { id: 116, name: 'Мельник', salary: 14000 },
+            { id: 117, name: 'Гончар', salary: 10500 },
+            { id: 118, name: 'Кравченко', salary: 13000 },
+            { id: 119, name: 'Данилюк', salary: 9000 },
+            { id: 120, name: 'Тарасенко', salary: 11500 },
+         ]
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {}
+            },
+            methods: {},
+            computed: {
+               list() {
+                  return workersList
+               }
+            }
+         }).mount('#app')
+      </script>
+      <hr />
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

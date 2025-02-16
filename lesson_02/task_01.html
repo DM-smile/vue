@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         img {
+            width: 100px;
+         }
+
+         #app {
+            display: flex;
+            flex-direction: column;
+            font-size: 20px;
+            gap: 10px;
+         }
+
+         button {
+            width: 150px;
+         }
+
+         .red-color {
+            color: red;
+         }
+
+         .blue-color {
+            color: blue;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Задача 1. Вводимо логіна і пароль. Якщо логін вірний відображаємо смайл. Якщо ні, то:</h3>
+      <ol>
+         <li>якщо логін = Іван – колір повідомлення про помилку синій</li>
+         <li>якщо хтось інший, то колір повідомлення червоний</li>
+      </ol>
+      <hr>
+      <div id="app">
+         <label>
+            <span>{{loginLabel}}</span>
+            <input type="text" v-model.lazy="login">
+         </label>
+         <label>
+            <span>{{passwordLabel}}</span>
+            <input type="password" v-model.lazy="password">
+         </label>
+         <button @click="checkData">OK</button>
+         <img v-if="correctData" :src="imgUrl" alt="image">
+         <div v-else-if="dataShow" :class="colorMessage">{{errorMessage}}</div>
+      </div>
+      <script>
+         const redColor = 'red-color'
+         const blueColor = 'blue-color'
+         const specialName = 'Іван'
+         const users = [
+            { login: "user1", password: "1user" },
+            { login: "user2", password: "2user" },
+            { login: "user3", password: "3user" },
+            { login: "user4", password: "4user" },
+            { login: "user5", password: "5user" },
+         ]
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {
+                  loginLabel: 'Введіть логін ',
+                  passwordLabel: 'Введіть пароль ',
+                  errorMessage: 'Невірний логін або пароль!',
+                  imgUrl: 'img/smile.png',
+                  login: null,
+                  password: null,
+                  correctData: false,
+                  colorMessage: redColor,
+                  dataShow: false
+               }
+            },
+            methods: {
+               checkData() {
+                  if (this.login && this.password) {
+                     const index = users.findIndex(
+                        (user) => user.login === this.login
+                     )
+                     if (index !== -1) {
+                        if (users[index].password === this.password) {
+                           this.correctData = true
+                        } else this.correctData = false
+                     }
+                     this.dataShow = true
+                     if (this.login.toLowerCase() === specialName.toLowerCase()) {
+                        this.correctData = false
+                        this.colorMessage = blueColor
+                     }
+                     else {
+                        this.colorMessage = redColor
+                     }
+                  }
+               }
+            },
+            computed: {}
+         }).mount('#app')
+      </script>
+      <hr>
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

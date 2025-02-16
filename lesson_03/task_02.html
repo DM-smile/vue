@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         .list {
+            border: 2px solid black;
+            padding: 10px;
+            display: inline-block;
+            /* height: 100%; */
+         }
+
+         label {
+            display: block;
+         }
+
+         .wrapper {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+         }
+
+         button {
+            width: 50%;
+         }
+
+         #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 700px;
+         }
+
+         h3 {
+            max-width: 800px;
+         }
+
+         .add-list {
+            width: 100%;
+            border: 2px solid black;
+            padding: 10px;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Здача 12. Мережа магазинів. Дано список відділень та список товарів. Для кожного відділення можна вибирати
+         декілька товарів. Вибирати та відображати перелік вибраних товарів для кожного відділення.</h3>
+      <div id="app">
+         <div class="wrapper">
+            <div>
+               <h3>Відділення</h3>
+               <div class="list">
+                  <label v-for="shop in shops" :key="shop.id">
+                     <input type="radio" :value="shop" :name="shop.type" v-model="selectedShop"> {{shop.name}} </label>
+               </div>
+            </div>
+            <div>
+               <h3>Товари</h3>
+               <div class="list">
+                  <label v-for="good in goods" :key="good.id">
+                     <input type="checkbox" :value="good" v-model="selectedGoods"> {{good.name}} </label>
+               </div>
+            </div>
+         </div>
+         <button @click="add">Додати</button>
+         <div>
+            <h3>Розподіл товарів</h3>
+            <div class="add-list">
+               <div class="item" v-for="(item, index) in itemData" :key="index">
+                  <h4>{{item.selectedShop.name}}</h4>
+                  <ul>
+                     <li v-for="good in item.selectedGoods" :key="good.id">{{good.name}}</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script>
+         const { createApp } = Vue
+         const shopsList = [
+            { id: '01', value: 'main', name: 'Головне', type: 'shop' },
+            { id: '02', value: 'opt', name: 'Оптовий', type: 'shop' },
+            { id: '03', value: 'shop1', name: 'Магазин 1', type: 'shop' },
+            { id: '04', value: 'shop2', name: 'Магазин 2', type: 'shop' },
+            { id: '05', value: 'shop3', name: 'Магазин 3', type: 'shop' },
+         ]
+         const goodsList = [
+            { id: '101', value: 'phones', name: 'Телефони' },
+            { id: '102', value: 'tv', name: 'Телевізори' },
+            { id: '103', value: 'microwave', name: 'Мікрохвильові печі' },
+            { id: '104', value: 'washing', name: 'Пральні машини' },
+            { id: '105', value: 'hair-dryer', name: 'Фени' },
+            { id: '106', value: 'teapots', name: 'Чайники' },
+         ]
+         createApp({
+            data() {
+               return {
+                  shops: shopsList,
+                  goods: goodsList,
+                  selectedShop: null,
+                  selectedGoods: [],
+                  itemData: [],
+               }
+            },
+            methods: {
+               add() {
+                  if (this.selectedShop && this.selectedGoods.length > 0) {
+                     this.itemData.push({
+                        selectedShop: this.selectedShop,
+                        selectedGoods: [...this.selectedGoods],
+                     })
+                     this.selectedShop = null
+                     this.selectedGoods = []
+                  }
+               },
+            },
+            computed: {}
+         }).mount('#app')
+      </script>
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

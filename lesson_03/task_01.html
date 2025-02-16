@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png" />
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         label {
+            display: flex;
+            justify-content: space-between;
+         }
+
+         .create {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+            width: 300px;
+            margin-bottom: 40px;
+            flex-shrink: 0;
+         }
+
+         td {
+            border: 1px solid black;
+            width: 35px;
+            height: 35px;
+            background-color: rgb(45, 212, 212);
+            transition: background-color 0.2s;
+            cursor: cell;
+            text-align: center;
+            font-size: 24px;
+            user-select: none;
+            flex-shrink: 0;
+         }
+
+         .hide {
+            color: transparent;
+         }
+
+         .show {
+            color: black;
+         }
+
+         .cell-normal {
+            color: black;
+         }
+
+         td:hover {
+            background-color: rgb(32, 139, 139);
+         }
+
+         td:active {
+            transform: scale(0.9);
+         }
+
+         button {
+            cursor: pointer;
+            transition: background-color 0.4s;
+         }
+
+         button:hover {
+            background-color: rgb(175, 175, 226);
+         }
+
+         .red-text {
+            color: red;
+         }
+
+         .open-button {
+            margin-bottom: 20px;
+            font-size: 20px;
+         }
+
+         .green {
+            color: rgb(5, 163, 5);
+            font-size: 24px;
+         }
+
+         .wrapper {
+            display: flex;
+            gap: 10px;
+         }
+
+         .btn-wrap {
+            padding: 1px;
+            display: inline-block;
+         }
+
+         .history {
+            max-width: 600px;
+         }
+
+         input {
+            width: 40%;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h2>Задача 1: Морський бій з історією.</h2>
+      <div id="app">
+         <div class="wrapper">
+            <div class="create">
+               <h3>Створення ігрового поля</h3>
+               <label>
+                  <span>Довжина поля</span>
+                  <input type="number" v-model="col" min="0" max="10" @input="validateInput('col')">
+               </label>
+               <label>
+                  <span>Висота поля</span>
+                  <input type="number" v-model="row" min="0" max="10" @input="validateInput('row')">
+               </label>
+               <label>
+                  <span>Кількість кораблів</span>
+                  <input type="number" v-model="ships" min="0">
+               </label>
+               <label>
+                  <span>Кількість пострілів</span>
+                  <input type="number" v-model="shotsInput" min="0">
+               </label>
+               <button @click="setShipInCell" :disabled="!validData">Почати гру!</button>
+            </div>
+            <div class="history">
+               <template v-if="history.length >1">
+                  <h3>Історія бою:</h3>
+                  <button v-for="(i, index) in history.slice(1)" @click="goToStep(index)">Крок №{{index+1}}</button>
+               </template>
+            </div>
+         </div>
+         <h2 v-if="win" class="green">Знищено всі кораблі ({{ships}} шт)!</h2>
+         <h2 v-else-if="shotsRemaining>0">Маєте пострілів: {{shotsRemaining}} </h2>
+         <template v-if="loss">
+            <h2 v-if="!win" class="red-text">Постріли скінчилися, Ви програли!</h2>
+            <button v-if="!win" @click="openAllField" class="open-button">Показати кораблі</button>
+         </template>
+         <table>
+            <tr v-for="(row, rowIndex) in field">
+               <td v-for="(col, colIndex) in row" @click="shot(rowIndex, colIndex)"
+                  :class="{'hide': this.field[rowIndex][colIndex]=== shipInCell, show: openField}">
+                  {{field[rowIndex][colIndex]}} </td>
+            </tr>
+         </table>
+      </div>
+      <script>
+         const { createApp } = Vue
+         const bomb = '🌊'
+         const fire = '💥'
+         const ship = '🚢'
+         createApp({
+            data() {
+               return {
+                  row: 0,
+                  col: 0,
+                  ships: 0,
+                  shotsInput: 0,
+                  shotsRemaining: 0,
+                  field: [],
+                  loss: false,
+                  clickedCells: [],
+                  openField: false,
+                  killShips: 0,
+                  win: false,
+                  initialField: [],
+                  history: []
+               }
+            },
+            methods: {
+               createField() {
+                  this.openField = false
+                  this.clickedCells = []
+                  this.history = []
+                  this.loss = false
+                  this.shotsRemaining = 0
+                  if (this.row > 0 && this.col > 0) {
+                     this.field = []
+                     for (let row = 0; row < this.row; row++) {
+                        let rowArr = []
+                        this.field.push(rowArr)
+                        for (let col = 0; col < this.col; col++) {
+                           rowArr.push('')
+                        }
+                     }
+                     this.emptyData = false
+                  } else this.emptyData = true
+               },
+               shot(rowIndex, colIndex) {
+                  if (this.shotsRemaining > 0) {
+                     if (this.field[rowIndex][colIndex] !== bomb && this.field[rowIndex][colIndex] !== fire) {
+                        if (this.field[rowIndex][colIndex] === ship) {
+                           this.field[rowIndex][colIndex] = fire
+                           this.killShips++
+                           if (this.ships === this.killShips) {
+                              this.win = true
+                           } else this.win = false
+                        } else {
+                           this.field[rowIndex][colIndex] = bomb
+                        }
+                        this.shotsRemaining--
+                        if (this.shotsRemaining < 1) this.loss = true
+                        this.clickedCells.push({ rowIndex, colIndex })
+                        // history
+                        this.history.push({
+                           killShips: this.killShips,
+                           currentShotsRemaining: this.shotsRemaining,
+                           gameField: JSON.stringify(this.field)
+                        })
+                     }
+                  }
+               },
+               openAllField() {
+                  this.openField = true
+               },
+               setShipInCell() {
+                  this.createField()
+                  if (this.field.length > 0) {
+                     this.killShips = 0
+                     this.loss = false
+                     this.win = false
+                     this.shotsRemaining = this.shotsInput
+                     let shipsPlaced = 0
+                     while (shipsPlaced < this.ships) {
+                        const randRow = Math.floor(Math.random() * this.row)
+                        const randCol = Math.floor(Math.random() * this.col)
+                        if (this.field[randRow][randCol] !== ship) {
+                           this.field[randRow][randCol] = ship
+                           shipsPlaced++
+                        }
+                     }
+                  }
+                  this.openField = false
+                  this.history.push({
+                     killShips: this.killShips,
+                     currentShotsRemaining: this.shotsRemaining,
+                     gameField: JSON.stringify(this.field)
+                  })
+               },
+               goToStep(index) {
+                  if (this.history[index]) {
+                     this.loss = false
+                     this.openField = false
+                     this.win = false
+                     this.shotsRemaining = this.history[index].currentShotsRemaining
+                     this.killShips = this.history[index].killShips
+                     this.field = JSON.parse(this.history[index].gameField)
+                     this.history.splice(index + 1)
+                  }
+               },
+               validateInput(field) {
+                  if (this[field] > 10) {
+                     this[field] = 10
+                  }
+               }
+            },
+            computed: {
+               validData() {
+                  return (
+                     this.row > 0 &&
+                     this.col > 0 &&
+                     this.ships > 0 &&
+                     (this.row * this.col) >= this.ships &&
+                     this.shotsInput >= this.ships
+                  )
+               },
+               shipInCell() {
+                  return ship
+               }
+            },
+         }).mount('#app')
+      </script>
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

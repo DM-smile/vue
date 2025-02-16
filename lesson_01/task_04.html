@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         h3 {
+            max-width: 600px;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Задача 4. “Рахунок у банку”</h3>
+      <ol>
+         <li> Спочатку сума дорівнює 0грн. Змінити суму у гривнях можна або зарахуванням на рахунок, або зняттям. </li>
+         <li> Сума автоматично переводиться у долари та євро (фіксований курс задається у data). </li>
+         <li> можливість зарахувати суму (контролювати, щоб не була від’ємною) </li>
+         <li>можливість зняти (щоб не можна зняти більше ніж є на рахунку)</li>
+         <li> при виконанні зняття і зарахування коштів вираховувати 3% від суми (відображати кількість відсотків
+            автоматично) </li>
+      </ol>
+      <p>При зміні суми :</p>
+      <ul>
+         <li>якщо було зняття, то суму відоражати червоним</li>
+         <li>якщо було зарахування, то суму відображати зеленим</li>
+         <li> Якщо сума валюти менша за 100 то відображати червоним кольором, інакше - зеленим </li>
+      </ul>
+      <hr />
+      <div id="app">
+         <div :style="grnColor">Сума на рахунку: {{totalSum}} грн</div>
+         <br />
+         <label> Зарахувати на рахунок <input type="number" placeholder="введіть суму" v-model.lazy="addMoneyNum" />
+         </label>
+         <button @click="addMoney">Зарахувати</button><br /><br />
+         <label> Зняти з рахунку <input type="number" placeholder="введіть суму"
+               v-model.lazy.number="withdrawMoneyNum" />
+         </label>
+         <button @click="withMoney">Зняти</button><br /><br />
+         <div>Відсотки за обслуговування: {{persentForService}} грн</div>
+         <br />
+         <div :style="usdColor">Сума у доларах: $ {{totalDollarSum}}</div>
+         <div :style="eurColor">Сума у євро: € {{totalEuroSum}}</div>
+      </div>
+      <script>
+         const { createApp } = Vue
+         const redColor = "color: red"
+         const greenColor = "color: green"
+
+         createApp({
+            data() {
+               return {
+                  totalSum: 0,
+                  addMoneyNum: null,
+                  withdrawMoneyNum: null,
+                  dollarRate: 42,
+                  euroRate: 44,
+                  persent: 3,
+                  persentForService: 0,
+                  grnColor: redColor,
+                  usdColor: redColor,
+                  eurColor: redColor,
+               }
+            },
+
+            methods: {
+               addMoney() {
+                  const addAmount = parseFloat(this.addMoneyNum)
+                  if (addAmount > 0) {
+                     const currentPersent = parseFloat(
+                        ((addAmount / 100) * this.persent).toFixed(2)
+                     )
+                     this.totalSum = parseFloat(
+                        (this.totalSum + addAmount - currentPersent).toFixed(2)
+                     )
+                     this.persentForService = parseFloat(
+                        (this.persentForService + currentPersent).toFixed(2)
+                     )
+                     this.grnColor = greenColor
+                  } else alert("Введено некоректне значення для зарахування!")
+                  this.addMoneyNum = null
+               },
+
+               withMoney() {
+                  const withAmount = parseFloat(this.withdrawMoneyNum)
+                  if (withAmount > 0) {
+                     const currentPersent = parseFloat(
+                        ((withAmount / 100) * this.persent).toFixed(2)
+                     )
+                     const result = parseFloat(
+                        (this.totalSum - withAmount - currentPersent).toFixed(
+                           2
+                        )
+                     )
+                     if (result >= 0) {
+                        this.totalSum = result
+                        this.persentForService = parseFloat(
+                           (this.persentForService + currentPersent).toFixed(2)
+                        )
+                        this.grnColor = redColor
+                     } else
+                        alert(`Недостатньо коштів для зняття! \nЗ урахуванням комісії для зняття не вистачає ${Math.abs(result).toFixed(2)} грн!`
+                        )
+                  } else alert("Введено некоректне значення для зняття!")
+                  this.withdrawMoneyNum = null
+               },
+            },
+
+            computed: {
+               totalDollarSum() {
+                  const result = this.totalSum / this.dollarRate
+                  if (result < 100) this.usdColor = redColor
+                  else this.usdColor = greenColor
+                  return result.toFixed(2)
+               },
+
+               totalEuroSum() {
+                  const result = this.totalSum / this.euroRate
+                  if (result < 100) this.eurColor = redColor
+                  else this.eurColor = greenColor
+                  return result.toFixed(2)
+               },
+            },
+         }).mount("#app")
+      </script>
+      <hr />
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

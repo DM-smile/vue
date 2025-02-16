@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         h3 {
+            max-width: 600px;
+         }
+
+         #app {
+            width: 450px;
+         }
+
+         .item {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+         }
+
+         li {
+            background-color: rgb(249, 240, 229);
+         }
+
+         li:not(:last-child) {
+            margin-bottom: 5px;
+         }
+
+         .order {
+            display: flex;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Задача 6. Задача. На кухню поступають замовлення. Спочатку ми додаємо їх у список “Очікують на виконання”,
+         якщо повар береться робити — замовлення переходить у список “Виконуються”, якщо замовлення виконано —
+         переходить у список “Готові до виносу”. Якщо натиснути на “Подано” - страва зникає з таблиці. Підказка: тут
+         треба зберігати 3 масиви страв ( waitingList, processingList, completedList)</h3>
+      <hr />
+      <div id="app">
+         <h2>Зробити замовлення</h2>
+         <div class="order">
+            <label>
+               <span>Назва страви:</span>
+               <input type="text" placeholder="вказати назву" v-model.trim="productTitle">
+            </label>
+            <br>
+            <label>
+               <span>Кількість:</span>
+               <input type="number" placeholder="вказати кількість" v-model.number="productCount">
+            </label>
+            <br>
+            <button :disabled="!isOrderDatacompleted" @click="onOrder">Замовити</button>
+         </div>
+         <hr>
+         <template v-if="!isWaitingListEmpty">
+            <h3>Очікують на виконання:</h3>
+            <ol>
+               <li v-for="(product, index) in waitingList" :key="product.id">
+                  <div class="item">{{product.title}} - {{product.number}} шт. <button
+                        @click="addToProcessingList(index)">Взяти в роботу</button>
+                  </div>
+               </li>
+            </ol>
+         </template>
+         <h3 v-else>Список замовлень порожній</h3>
+         <hr>
+         <template v-if="!isProcessingListEmpty">
+            <h3>Виконуються:</h3>
+            <ol>
+               <li v-for="(product, index) in processingList" :key="product.id">
+                  <div class="item"> {{product.title}} - {{product.number}} шт. <button
+                        @click="addToCompletedList(index)">Виконано</button></div>
+               </li>
+            </ol>
+         </template>
+         <h3 v-else>Замовлення поки не виконуються</h3>
+         <hr>
+         <template v-if="!isCompletedListEmpty">
+            <h3>Готові до виносу:</h3>
+            <ol>
+               <li v-for="(product, index) in completedList" :key="product.id">
+                  <div class="item"> {{product.title}} - {{product.number}} шт. <button
+                        @click="removeDishFromCompletedList(index)">Подано</button>
+                  </div>
+               </li>
+            </ol>
+         </template>
+         <h3 v-else>Готових страв поки що немає</h3>
+         <hr />
+      </div>
+      <script>
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {
+                  waitingList: [],
+                  processingList: [],
+                  completedList: [],
+                  productTitle: null,
+                  productCount: null,
+               }
+            },
+            methods: {
+               clear() {
+                  this.productTitle = null
+                  this.productCount = null
+               },
+               onOrder() {
+                  this.waitingList.push({
+                     id: new Date().getTime(),
+                     title: this.productTitle,
+                     number: this.productCount
+                  })
+                  this.clear()
+               },
+               addToProcessingList(index) {
+                  const el = this.waitingList.splice(index, 1)[0];
+                  this.processingList.push(el);
+               },
+               addToCompletedList(index) {
+                  const el = this.processingList.splice(index, 1)[0];
+                  this.completedList.push(el);
+               },
+               removeDishFromCompletedList(index) {
+                  const el = this.completedList.splice(index, 1)[0];
+               },
+
+            },
+            computed: {
+               isWaitingListEmpty() {
+                  return this.waitingList.length === 0
+               },
+               isProcessingListEmpty() {
+                  return this.processingList.length === 0
+               },
+               isCompletedListEmpty() {
+                  return this.completedList.length === 0
+               },
+               isOrderDatacompleted() {
+                  return this.productTitle && this.productCount
+               },
+            }
+         }).mount('#app')
+      </script>
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

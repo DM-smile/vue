@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         h3 {
+            max-width: 600px;
+         }
+
+         img {
+            width: 600px;
+         }
+
+         .info {
+            font-size: 24px;
+            color: red;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3> Задача 2. Вводиться номер місяця. Автоматично виводити рекомендований одяг (зима – пальто, літо – шорти ….).
+         Також автоматично виводити зображення з відповідним зображенням лісу (зима – ліс зі снігом, осінь – жовтий ліс,
+         …). </h3>
+      <hr />
+      <div id="app">
+         <label> Введіть номер місяця 1 - 12 <input type="number" v-model.lazy.number="numberMonth"
+               placeholder="Номер місяця" />
+         </label>
+         <div class="info"> Зараз {{ currentSeason.text }}{{ currentSeason.clothing }} </div>
+         <div>
+            <img :src="currentSeason.image" />
+         </div>
+      </div>
+      <hr />
+      <script>
+         const seasons = ["літо", "осінь", "зима", "весна"]
+         const clothings = ["шорти", "плащ", "пальто", "куртку"]
+         const images = [
+            "img/summer.jpg",
+            "img/autumn.jpg",
+            "img/winter.jpg",
+            "img/spring.jpg",
+         ]
+
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {
+                  numberMonth: "",
+
+                  seasons: {
+                     summer: {
+                        months: [6, 7, 8],
+                        text: seasons[0],
+                        clothing: ", вдягніть " + clothings[0] + "!",
+                        image: images[0],
+                     },
+                     autumn: {
+                        months: [9, 10, 11],
+                        text: seasons[1],
+                        clothing: ", вдягніть " + clothings[1] + "!",
+                        image: images[1],
+                     },
+                     winter: {
+                        months: [12, 1, 2],
+                        text: seasons[2],
+                        clothing: ", вдягніть " + clothings[2] + "!",
+                        image: images[2],
+                     },
+                     spring: {
+                        months: [3, 4, 5],
+                        text: seasons[3],
+                        clothing: ", вдягніть " + clothings[3] + "!",
+                        image: images[3],
+                     },
+                  },
+               }
+            },
+            computed: {
+               currentSeason() {
+                  const month = this.numberMonth
+                  for (const season of Object.values(this.seasons)) {
+                     if (season.months.includes(month)) {
+                        return season
+                     }
+                  }
+                  return {
+                     text: "невідомий місяць!!!",
+                     clothing: "",
+                     image: "",
+                  }
+               },
+            },
+         }).mount("#app")
+      </script>
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

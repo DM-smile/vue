@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         * {
+            padding: 0;
+            margin: 0;
+         }
+
+         h3 {
+            max-width: 600px;
+         }
+
+         #app {
+            max-width: 655px;
+            background-color: rgb(247, 239, 229);
+         }
+
+         .item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 30px;
+         }
+
+         .head {
+            display: flex;
+            align-items: end;
+            gap: 10px;
+         }
+
+         .head__logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+         }
+
+         .logo-img {
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            object-fit: contain;
+         }
+
+         .main {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+         }
+
+         .main__title {
+            font-size: 24px;
+         }
+
+         .footer__links {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+         }
+
+         a {
+            text-decoration: none;
+         }
+
+         a:hover {
+            text-decoration: underline;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3>Задача 5. Самостійно сформуйте масив даних та виведіть фрагмент на зразок поданого (дані не обов’язково
+         повинні співпадати)</h3>
+      <img src="img/task5.png" alt="">
+      <hr />
+      <div id="app">
+         <div>
+            <div class="item" v-for="item in items" :key="keyGenerate">
+               <div class="item__head head">
+                  <div class="head__logo">
+                     <img class="logo-img" :src="item.logo" alt="logo">
+                  </div>
+                  <div class="head__info">
+                     <p v-for="row in item.headText" :key="keyGenerate"> {{row}} </p>
+                  </div>
+                  <a class="head__translate-link" href="#">{{item.translateText}}</a>
+               </div>
+               <div class="item__main main">
+                  <a class="main__title" href="#">{{item.title}}</a>
+                  <div class="main__content">
+                     <p v-for="paragraph in item.content" :key="keyGenerate">{{paragraph}}</p>
+                  </div>
+               </div>
+               <div class="item__footer footer">
+                  <div class="footer__links">
+                     <a href="#" v-for="link in item.footerLinks" :key="keyGenerate">{{link}}</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <hr />
+      <script>
+         const itemsList = [
+            {
+               logo: 'img/vue_logo.png',
+               translateText: 'Перекласти цю сторінку',
+               headText: ['Vue.js', 'https://vuejs.org › tutorial'],
+               title: 'Посібник',
+               content: ['Посібник передбачає базове знайомство з HTML, CSS і JavaScript. Якщо ви зовсім новачок у фронтенд розробці, можливо, як ваш перший крок переходити безпосередньо ...'],
+               footerLinks: []
+            },
+            {
+               logo: 'img/vue_logo.png',
+               translateText: 'Перекласти цю сторінку',
+               headText: ['Vue.js', 'https://vuejs.org › tutorial'],
+               title: 'Tutorial',
+               content: ['Welcome to the Vue tutorial! The goal of this tutorial is to quickly give you an experience of what it feels like to work with Vue, right in the browser.'],
+               footerLinks: ['Creating a Vue Application', 'Reactivity Fundamentals', 'Lifecycle Hooks', 'Watchers']
+            },
+            {
+               logo: 'img/vue_logo.png',
+               translateText: 'Перекласти цю сторінку',
+               headText: ['Vue.js', 'https://ua.vuejs.org › guide › quick-start'],
+               title: 'Вступ',
+               content: ['Швидкий старт​. Спробуйте Vue онлайн. Щоб швидко спробувати Vue, спробуйте його безпосередньо в нашій пісочниці. Якщо ви віддаєте перевагу звичайному ...'],
+               footerLinks: []
+            },
+            {
+               logo: 'img/it.png',
+               translateText: '',
+               headText: ['ITVDN', 'https://itvdn.com › Головна › Каталог'],
+               title: 'Відеокурс Vue.js стартовий для початківців українською ...',
+               content: ['3 квіт. 2023р. — Мета уроку - познайомити студентів з фреймворком Vue.js, пояснити, для яких потреб він використовується. Допомогти обрати правильне середовище ...'],
+               footerLinks: []
+            },
+            {
+               logo: 'img/vue_logo.png',
+               translateText: '',
+               headText: ['Vue.js', 'https://ua.vuejs.org › guide › extras › ways-of-using-vue'],
+               title: 'Способи використання Vue',
+               content: ['Vue надає першокласні API для «рендерингу» програми Vue у рядки HTML на сервері. Це дозволяє серверу надсилати назад уже відтворений HTML, дозволяючи кінцевим ...'],
+               footerLinks: []
+            },
+            {
+               logo: 'img/fox.png',
+               translateText: '',
+               headText: ['FoxmindEd', 'https://foxminded.ua› ways-of-using-vue › vue-js'],
+               title: 'Vue js: навіщо цей фреймворк і як розпочати його ...',
+               content: ['4 вер. 2023р. — Чому Vue js вибирають розробники? Ресурси та рекомендації, які допоможуть вам розпочати навчання. Основні етапи створення лендінгу.'],
+               footerLinks: []
+            },
+            {
+               logo: 'img/spacelab.png',
+               translateText: '',
+               headText: ['spacelab.ua', 'https://spacelab.ua › course › vuejs'],
+               title: 'Курс з Vue.js - Безкоштовні курси програмування - SpaceLab',
+               content: ['Безкоштовний курс з розробки Vue.js від SpaceLab з можливістю стажування на реальних проєктах та працевлаштуванням в компанії.'],
+               footerLinks: []
+            },
+         ]
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {
+                  items: itemsList,
+               }
+            },
+            methods: {},
+            computed: {
+               keyGenerate() {
+                  return new Date().getTime()
+               }
+            }
+         }).mount('#app')
+      </script>
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>

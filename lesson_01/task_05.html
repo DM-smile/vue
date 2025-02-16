@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/x-icon" href="../favicon.png">
+      <title>Home Work</title>
+      <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+      <style>
+         h3 {
+            max-width: 600px;
+         }
+
+         .info {
+            font-size: 30px;
+         }
+
+         #app {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+         }
+
+         input {
+            margin-right: 15px;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h3> Задача 5. Додаток містить масив об’єктів (логін, пароль) -- інсуючі логіни і паролі. Користувач вводить логін
+         і пароль, а програма повідомляє чи може користувач бути авторизованим (чи є він одним з масиву). </h3>
+      <hr />
+      <div id="app">
+         <label> Login: <input type="text" :style="styleLogin" placeholder="Введіть логін" v-model="login" />
+            <button @click="autofill">Автозаповнення даних</button>
+         </label>
+         <label> Password: <input :type="passType" :style="stylePass" placeholder="Введіть пароль" v-model="password" />
+            <button @click="showPass">Show pass</button>
+            <button @click="clear">Clear</button>
+         </label>
+         <button @click="check">GO</button>
+         <div class="info" :style="styleColor">{{info}}</div>
+      </div>
+      <hr />
+      <script>
+         const users = [
+            { login: "Ivan", password: "vania2000" },
+            { login: "Maria", password: "masha123" },
+            { login: "Alex", password: "alex321" },
+            { login: "Olga", password: "olga456" },
+            { login: "Dmitry", password: "dmitry789" },
+            { login: "Svetlana", password: "svetlana999" },
+            { login: "Andrey", password: "andrey123" },
+            { login: "Ekaterina", password: "ekaterina111" },
+            { login: "Maxim", password: "maxim2020" },
+            { login: "Elena", password: "elena2025" },
+         ]
+         const success = "Ви успішно авторизовані!"
+         const error = "Невірний логін або пароль!"
+         const emptyField = "Заповніть обов'язкове поле!"
+         const errorStyle = "outline: 4px solid red"
+         const redColor = "color: red"
+         const greenColor = "color: green"
+         const { createApp } = Vue
+         createApp({
+            data() {
+               return {
+                  login: "",
+                  password: "",
+                  info: "",
+                  styleLogin: "",
+                  stylePass: "",
+                  styleColor: "",
+                  passType: 'password'
+               }
+            },
+            methods: {
+               showPass() {
+                  this.passType === 'password' ? this.passType = 'text' : this.passType = 'password'
+               },
+               clear() {
+                  this.login = ''
+                  this.password = ''
+                  this.styleLogin = ""
+                  this.stylePass = ""
+                  this.info = ''
+               },
+               autofill() {
+                  this.login = 'Dmitry'
+                  this.password = 'dmitry789'
+                  this.styleLogin = ""
+                  this.stylePass = ""
+               },
+               check() {
+                  this.styleLogin = ""
+                  this.stylePass = ""
+                  this.styleColor = ""
+
+                  if (this.login === "") {
+                     this.styleLogin = errorStyle
+                     this.info = emptyField
+                     this.styleColor = redColor
+
+                  } else this.styleLogin = ""
+
+                  if (this.password === "") {
+                     this.stylePass = errorStyle
+                     this.info = emptyField
+                     this.styleColor = redColor
+                  } else this.stylePass = ""
+
+                  if (this.login && this.password) {
+                     const index = users.findIndex(
+                        (user) => user.login === this.login
+                     )
+                     if (index !== -1) {
+                        if (users[index].password === this.password) {
+                           this.info = success
+                           this.styleColor = greenColor
+                        } else {
+                           this.info = error
+                           this.styleColor = redColor
+                        }
+                     } else {
+                        this.info = error
+                        this.styleColor = redColor
+                     }
+                  }
+               },
+            },
+         }).mount("#app")
+      </script>
+      <br /><br />
+      <a href="tasks.html">Back</a>
+   </body>
+
+</html>
