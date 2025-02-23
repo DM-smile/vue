@@ -1,0 +1,25 @@
+@forward "mixin";
+@forward "variables";
+@use "mixin" as *;
+@use "variables" as *;
+
+body {
+   //  background: url(../../../public/bg/noisy.png) fixed no-repeat;
+   //  background-color: #ededed;
+   //  font-family: "Mulish";
+}
+
+[class*="__container"] {
+   max-width: #{$containerWidth}px;
+   margin: 0 auto;
+   padding-left: toRem(15);
+   padding-right: toRem(15);
+}
+
+.wrapper {
+   display: flex;
+   flex-direction: column;
+}
+.page {
+   flex-grow: 1;
+}
