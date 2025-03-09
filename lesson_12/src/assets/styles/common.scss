@@ -1,0 +1,37 @@
+@forward "mixin";
+@forward "variables";
+@use "mixin" as *;
+@use "variables" as *;
+
+@mixin button-style {
+   border: toRem(1) solid black;
+   border-radius: toRem(5);
+   padding: toRem(5) toRem(10);
+   @media (any-hover: hover) {
+      transition: all 0.1s;
+      &:hover {
+         background-color: rgb(0, 213, 0);
+      }
+   }
+}
+
+body {
+   //  background: url(../../../public/bg/noisy.png) fixed no-repeat;
+   background-color: rgb(247, 236, 210);
+   //  font-family: "Mulish";
+}
+
+[class*="__container"] {
+   max-width: #{$containerWidth}px;
+   margin: 0 auto;
+   padding-left: toRem(15);
+   padding-right: toRem(15);
+}
+
+.wrapper {
+   display: flex;
+   flex-direction: column;
+}
+.page {
+   flex-grow: 1;
+}
