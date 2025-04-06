@@ -1,0 +1,131 @@
+@forward "mixin";
+@forward "variables";
+@use "mixin" as *;
+@use "variables" as *;
+
+@mixin button-style {
+   border: toRem(1) solid black;
+   border-radius: toRem(5);
+   padding: toRem(5) toRem(10);
+   @media (any-hover: hover) {
+      transition: all 0.1s;
+      &:hover {
+         background-color: rgb(0, 213, 0);
+      }
+   }
+}
+
+body {
+   //  background: url(../../../public/bg/noisy.png) fixed no-repeat;
+   // background-color: rgb(247, 236, 210);
+   //  font-family: "Mulish";
+   overflow: hidden;
+}
+
+[class*="__container"] {
+   max-width: #{$containerWidth}px;
+   margin: 0 auto;
+   padding-left: toRem(15);
+   padding-right: toRem(15);
+}
+
+.wrapper {
+   display: flex;
+   flex-direction: column;
+}
+.page {
+   flex-grow: 1;
+}
+h1 {
+   font-size: toRem(30);
+   margin-bottom: toRem(30);
+}
+li {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   border-bottom: toRem(1) solid grey;
+   font-size: toRem(20);
+}
+.content {
+   max-width: toRem(500);
+   margin: 0 auto;
+}
+.list-buttons {
+   display: flex;
+   gap: toRem(10);
+   align-items: center;
+}
+.titles {
+   display: flex;
+   justify-content: space-around;
+   font-size: toRem(25);
+   border-bottom: toRem(3) solid grey;
+   margin-bottom: toRem(20);
+   & > div {
+      display: flex;
+      align-items: center;
+      gap: toRem(10);
+   }
+}
+ol,
+ul {
+   margin-bottom: toRem(30);
+   overflow: scroll;
+   max-height: 30vh;
+   padding-right: toRem(15);
+}
+.form {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   font-size: toRem(20);
+   gap: toRem(20);
+   & .form-body {
+      text-align: center;
+   }
+}
+.input {
+   display: flex;
+   flex-direction: column;
+   text-align: center;
+   width: toRem(400);
+   border: toRem(1) solid black;
+   border-radius: toRem(5);
+   text-align: center;
+}
+.action-block {
+   display: flex;
+   gap: toRem(20);
+}
+h2 {
+   font-size: toRem(20);
+   text-align: center;
+   text-decoration: underline;
+   margin-bottom: toRem(10);
+}
+.v-slide-group__content {
+   justify-content: center;
+}
+.sort-btn {
+   font-size: toRem(18);
+}
+.sort-buses {
+   font-size: toRem(20);
+   display: flex;
+   justify-content: end;
+   margin-bottom: toRem(20);
+   & > div {
+      display: inline;
+      border: toRem(1) solid black;
+      border-radius: toRem(10);
+      padding: toRem(5);
+      @media (any-hover: hover) {
+         transition: all 0.2s;
+         &:hover {
+            background-color: rgb(211, 211, 211);
+         }
+      }
+   }
+}
