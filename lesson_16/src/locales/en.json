@@ -1,0 +1,42 @@
+{
+   "titles": {
+      "header": "SUPER-SHOP",
+      "homeLink": "HOME",
+      "contacts": "Contacts",
+      "langTitle": "Change language",
+      "seller": "Seller",
+      "allSellers": "All sellers",
+      "brand": "Brands",
+      "filters": "Filters",
+      "edit": "Editing product",
+      "editNew": "Create new product",
+      "epmtyList": "No products found!",
+      "contactsTitle": "Our contacts"
+   },
+   "labels": {
+      "price": "UAH"
+   },
+   "buttons": {
+      "addProduct": "ADD NEW PRODUCT",
+      "delete": "Delete",
+      "edit": "Edit",
+      "buy": "Buy",
+      "save": "Save",
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "lang": "🇺🇸",
+      "login": "Login",
+      "logout": "Logout",
+      "apply": "Apply filters",
+      "clearFilters": "Clear filters"
+   },
+   "form": {
+      "brand": "Brand",
+      "title": "Title",
+      "price": "Price",
+      "photo": "Image",
+      "seller": "Seller",
+      "rozetka": "Rozetka",
+      "other": "Ocher sellers"
+   }
+}
