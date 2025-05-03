@@ -14,7 +14,7 @@
          {{ $t('buttons.addProduct') }}
       </button>
       <div class="body">
-         <div v-if="getUser" class="filter">
+         <div class="filter">
             <filter-component />
          </div>
          <div class="products-list">
@@ -39,7 +39,6 @@ export default {
    computed: {
       ...mapGetters('productsList', { productsList: 'getItemsList' }),
       ...mapGetters('productsList', ['isLoading', 'hasError']),
-      ...mapGetters('auth', ['getUser']),
       ...mapGetters('users', ['userPermissions']),
       emptyProductsList() {
          return this.productsList.length
