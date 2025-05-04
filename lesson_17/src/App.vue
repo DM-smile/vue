@@ -27,6 +27,7 @@ nav {
    display: flex;
    justify-content: space-between;
    flex-wrap: wrap;
+   gap: 10px;
    & > * {
       border-radius: 10px;
       padding: 0 10px;
@@ -42,6 +43,10 @@ nav {
 .list {
    width: 400px;
    margin: 0 auto;
+   display: flex;
+   flex-direction: column;
+   gap: 7px;
+   margin-bottom: 20px;
    // .list__item
 
    &__item {
@@ -69,5 +74,14 @@ button {
          background-color: greenyellow;
       }
    }
+}
+.add-new-item {
+   display: flex;
+   text-align: center;
+   justify-content: center;
+   gap: 20px;
+}
+input {
+   text-align: center;
 }
 </style>
